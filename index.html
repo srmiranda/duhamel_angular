@@ -4,31 +4,133 @@
         <title>Duhamel Form with AngularJS</title>
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <!-- load bootstrap and fontawesome via CDN -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/foundation_and_overrides.scss" />
+        <link rel="stylesheet" href="css/foundation.css" />
+        <link rel="stylesheet" href="css/foundation.min.css" />
+        <link rel="stylesheet" href="css/normalize.css" />
+        <link rel="stylesheet" href="css/style.css" />
 
-        <script src="//code.angularjs.org/1.3.0-rc.1/angular.min.js"></script>
+        <!-- load angular -->
+        <script src="//code.angularjs.org/1.4.0/angular.js"></script>
+        <!-- load ngmessages -->
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
         <script src="app.js"></script>
     </head>
     <body>
 
         <div class="container">
 
-            <div ng-controller="mainController">
-            
-                <div>
-                    <label>Event</label>
-                    <input type="text" ng-model="alexWork.evName" /></br>
-                    <label>Team Size</label>
-                    <input type="text" ng-model="alexWork.teamSize" /></br>
-                </div>
+            <div class="row" ng-controller="mainController">
+              <div class="left large-6 small-12 form">
+                <form class="form-green" name="eventForm" ng-submit="submitForm()" novalidate>
+                    <h1>Create Your Event
+                        <span>Please make a selection in each of the fields.</span>
+                    </h1>
+                    
+                    <div ng-class="{ 'has-error' : eventForm.eventName.$invalid && !eventForm.eventName.$pristine }">
+                        <label>Event Name: </label>
+                        <input type="text" class="form-control" name="eventName" ng-model="alexWork.evName" ng-maxlength="30" required/></br>
+                        <p ng-show="eventForm.eventName.$invalid && !eventForm.eventName.$pristine" class="help-block">Event name is required.</p>
+                        <p ng-show="eventForm.eventName.$error.maxlength" class="help-block">Event name is too long.</p>
+                    </div>
+                 
+                    <div ng-class="{ 'has-error' : eventForm.startDate.$invalid && !eventForm.startDate.$pristine }">
+                        <label>Start Date</label>
+                        <input type="date" class="form-control" name="startDate" ng-model="alexWork.sDate" placeholder="mm/dd/year" required></br>
+                        <p ng-show="eventForm.startDate.$invalid && !eventForm.startDate.$pristine" class="help-block">Start date is required.</p>
+                    </div>
+
+                    <div ng-class="{ 'has-error' : eventForm.endDate.$invalid && !eventForm.endDate.$pristine }">
+                        <label>End Date</label>
+                        <input type="date" name="endDate" ng-model="alexWork.eDate" placeholder="mm/dd/year" required></br>
+                        <p ng-show="eventForm.endDate.$invalid && !eventForm.endDate.$pristine" class="help-block">End date is required.</p>
+                        <p ng-show="alexWork.sDate > alexWork.eDate" class="alert-box info">End date must be at or after start date.</p>
+                    </div>
+
+                    <div>
+                        <label>Number of Players</label>
+                        <select name="players" ng-model="alexWork.teamSize" required>
+                          <option value="1">1 Player</option>
+                          <option value="2">2 Players</option>
+                          <option value="3">3 Players</option>
+                          <option value="4">4 Players</option>
+                        </select>
+                    </div>
+                    
+                    <hr />
+        
+                    <div class="row" style="padding-left: 25px;">
+                      <div class="left small-6">
+                        <label>Scoring Type</label>
+                        <input type="radio" name="scoringType" id="gross" ng-model="alexWork.scoringType" 
+                               value="gross" required><label for="gross">Gross</label>
+                        <input type="radio" name="scoringType" id="net" ng-model="alexWork.scoringType" 
+                               value="net" required><label for="net">Net</label>
+                        <div ng-show="alexWork.scoringType == 'net'">
+                            <div ng-class="{ 'has-error' : eventForm.handicap.$invalid }">
+                              <label>Handicap</label>
+                              <input type="number" ng-min="1" ng-max="100" ng-model="alexWork.handicapPercent" name="handicap"></input>
+                              <p ng-show="eventForm.handicap.$error.max || eventForm.handicap.$error.min" class="help-block">Must be between 1-100.</p>
+                              <label>Dot Cards</label>
+                              <select name="dotCard" ng-model="alexWork.dotCards" required>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                              </select>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="right small-6">
+                        <label>Use Flights</label>
+                        <input type="radio" name="flights" id="flightYes" ng-model="alexWork.useFlights" 
+                               value="1" required><label for="flightYes">Yes</label>
+                        <input type="radio" name="flights" id="flightNo" ng-model="alexWork.useFlights" 
+                               value="0" required><label for="flightNo">No</label>
+                      </div>
+                    </div>
+                    <hr />
+        
+                    <div class="row" style="padding-left: 25px;">
+                      <div class="left small-6">
+                        <label>Use Cut</label>
+                        <input type="radio" name="cut" ng-model="alexWork.doCut" id="cutYes" value="1" required><label for="cutYes" required>Yes</label>
+                        <input type="radio" name="cut" ng-model="alexWork.doCut" id="cutNo" value="0" required><label for="cutNo" required>No</label>
+
+                          <div ng-show="alexWork.doCut == '1'">
+                            <label>Include Ties</label>
+                            <select name="includeTies" ng-model="alexWork.includeTies">
+                              <option value="1">Yes</option>
+                              <option value="0">No</option>
+                            </select>
+                            <label>Include Ten From Lead</label>
+                            <select name="includeTen" ng-model="alexWork.tenFromLead">
+                              <option value="1">Yes</option>
+                              <option value="0">No</option>
+                            </select>
+                          </div>
+                        </div>
+                        
+                        <div class="right small-6">
+                            <label>Club Hometown</label>
+                            <input type="radio" name="hometown" id="useName" ng-model="alexWork.clubHometown" 
+                                   value="C" required><label for="useName">Use Club Name</label><br>
+                            <input type="radio" name="hometown" id="useHome" ng-model="alexWork.clubHometown" 
+                                   value="H" required><label for="useHome">Use Hometown</label>
+                        </div>
+                    </div>
+        
+                    <br>
+                <button class="button expand" ng-disabled="eventForm.$invalid" type="submit">Submit</button>
                 
+                </form>
                 <hr />
-                
-                <pre>alexWork: {{alexWork | json}}</pre>
-                
+              </div>
+            <div class="right large-5">
+                 <pre>alexWork: {{alexWork | json}}</pre>
             </div>
+          </div>
             
 		</div>
         

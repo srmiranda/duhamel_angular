@@ -7,17 +7,17 @@ myApp.controller('mainController', ['$scope', function($scope) {
             "eID": "1441",
             "evYear": "2015",
             "qualifier": null,
-            "evName": "CDGA Senior Better Ball of Pairs Qualifier #2",
-            "sDate": 1433134800000,
-            "eDate": 1433134800000,
-            "teamSize": "2",
+            "evName": "",
+            "sDate": 0,
+            "eDate": 0,
+            "teamSize": "1",
             "datedisp": "Jun 01, 2015",
             "etid": "1",
             "clAbbrev": "Elgin CC",
             "past": "1",
-            "scoringType": "4",
-            "clubHometown": "C",
-            "doCut": "1",
+            "scoringType": "",
+            "clubHometown": "",
+            "doCut": "",
             "doAlt": "1",
             "cutRound": "0",
             "cutTopX": 0,
@@ -26,7 +26,7 @@ myApp.controller('mainController', ['$scope', function($scope) {
             "numStrokePlayRounds": 1,
             "hostClubID": "110",
             "courseID": "111",
-            "useFlights": "1",
+            "useFlights": "",
             "byUser": "APD",
             "lastUpdate": "2015-06-23T18:37:00",
             "inLocal": "1",
@@ -34,7 +34,7 @@ myApp.controller('mainController', ['$scope', function($scope) {
             "inFlights": "0",
             "inTeeSheets": "1",
             "inPairings": "1",
-            "handicapPercent": "100",
+            "handicapPercent": 100,
             "dotCards": "0",
             "maxDiff": 4.4,
             "logoid": "1",
@@ -53,6 +53,15 @@ myApp.controller('mainController', ['$scope', function($scope) {
                   "cutApplied": "1"
               }
             ]
+        };
+    
+        $scope.submitForm = function() {
+
+            // check to make sure the form is completely valid
+            if ($scope.eventForm.$valid) {
+                alert('Form is correctly filled out.');
+            }
+
         };
     
 }]);
