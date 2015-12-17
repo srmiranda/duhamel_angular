@@ -47,7 +47,7 @@
                         <label>End Date</label>
                         <input type="date" name="endDate" ng-model="alexWork.eDate" placeholder="mm/dd/year" required></br>
                         <p ng-show="eventForm.endDate.$invalid && !eventForm.endDate.$pristine" class="help-block">End date is required.</p>
-                        <p ng-show="alexWork.sDate > alexWork.eDate" class="alert-box info">End date must be at or after start date.</p>
+                        <p ng-show="alexWork.sDate > alexWork.eDate" class="alert-box info">End date must be on or after start date.</p>
                     </div>
 
                     <div>
